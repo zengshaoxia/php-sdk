@@ -727,9 +727,10 @@ class Query {
      *
      * @param int $skip  (optional) Number of rows to skip
      * @param int $limit (optional) Max number of rows to fetch
+     * @param bool $returnObj (optional) when true, return array of object,otherwise return array
      * @return array
      */
-    public function find($skip=-1, $limit=-1) {
+    public function find($skip=-1, $limit=-1, $returnObj=true) {
         $params = $this->encode();
         if ($skip >= 0) {
             $params["skip"] = $skip;
@@ -739,6 +740,9 @@ class Query {
         }
 
         $resp = Client::get("/classes/{$this->getClassName()}", $params);
+        if ($returnObj == false) {
+            return $resp;
+        }
         $objects = array();
         forEach($resp["results"] as $props) {
             $obj = Object::create($this->getClassName());
@@ -772,15 +776,19 @@ class Query {
      *
      * @param string $cql     CQL statement
      * @param array  $pvalues Positional values to replace in CQL
+     * @param bool $returnObj (optional) when true, return array of object,otherwise return array
      * @return array
      * @link https://leancloud.cn/docs/cql_guide.html
      */
-    public static function doCloudQuery($cql, $pvalues=array()) {
+    public static function doCloudQuery($cql, $pvalues=array(), $returnObj=true) {
         $data = array("cql" => $cql);
         if (!empty($pvalues)) {
             $data["pvalues"] = json_encode(Client::encode($pvalues));
         }
         $resp = Client::get('/cloudQuery', $data);
+        if ($returnObj == false) {
+            return $resp;
+        }
         $objects = array();
         forEach($resp["results"] as $val) {
             $obj = Object::create($resp["className"], $val["objectId"]);
