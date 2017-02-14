@@ -431,7 +431,8 @@ class Client {
         $data = json_decode($resp, true);
         if (isset($data["error"])) {
             $code = isset($data["code"]) ? $data["code"] : -1;
-            throw new CloudException("{$code} {$data['error']}", $code);
+            $message=is_array($data['error'])? "{$data['error']['status']} {$data['error']['code'] } {$data['error']['error']}":$data['error'];
+            throw new CloudException($message, $code);
         }
         return $data;
     }
