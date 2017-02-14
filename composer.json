@@ -1,9 +1,9 @@
 {
-    "name": "leancloud/leancloud-sdk",
+    "name": "zwx/php-sdk",
     "description": "LeanCloud PHP SDK",
-    "type": "library",
+    "type": "root",
     "keywords": ["leancloud"],
-    "homepage": "https://github.com/leancloud/php-sdk",
+    "homepage": "https://git.appgame.com/zengweixing/php-sdk",
     "authors": [
         {
             "name": "Juvenn Woo",
